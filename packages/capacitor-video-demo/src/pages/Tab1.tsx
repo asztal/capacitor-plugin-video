@@ -1,6 +1,6 @@
-import React from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
+import { CapacitorVideoPlugin } from "capacitor-plugin-video";
+import { IonButton, IonContent, IonHeader, IonItem, IonLabel, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import React, { useState } from 'react';
 import './Tab1.css';
 
 const Tab1: React.FC = () => {
@@ -17,10 +17,46 @@ const Tab1: React.FC = () => {
             <IonTitle size="large">Tab 1</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <ExploreContainer name="Tab 1 page" />
+
+        <Upload />
       </IonContent>
     </IonPage>
   );
 };
+
+function Upload() {
+  const [path, setPath] = useState<string>();
+  const [nativePath, setNativePath] = useState<string>();
+
+  const handleClick = () => {
+    console.log(CapacitorVideoPlugin.echo({ value: "Hello" }));
+    setPath(path);
+    setNativePath(nativePath);
+  };
+
+  return (
+    <div className="container">
+      <div>
+        <IonButton type="button" onClick={handleClick}>
+          Upload Video
+        </IonButton>
+      </div>
+      <IonList>
+        <IonItem>
+          <IonLabel>
+            <h2>File path</h2>
+            <p>{path || "(not set)"}</p>
+          </IonLabel>
+        </IonItem>
+        <IonItem>
+          <IonLabel>
+            <h2>Native file path</h2>
+            <p>{nativePath || "(not set)"}</p>
+          </IonLabel>
+        </IonItem>
+      </IonList>
+    </div>
+  );
+}
 
 export default Tab1;
