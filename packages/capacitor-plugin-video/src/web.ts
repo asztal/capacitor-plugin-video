@@ -9,9 +9,8 @@ export class CapacitorVideoPluginWeb extends WebPlugin implements CapacitorVideo
     });
   }
 
-  async echo(options: { value: string }): Promise<{ value: string }> {
-    console.log('ECHO', options);
-    return options;
+  async selectVideo(_options: {}): Promise<{ path: string }> {
+    throw new Error("Not implemented");
   }
 }
 

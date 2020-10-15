@@ -7,11 +7,11 @@ import Capacitor
  */
 @objc(CapacitorVideoPlugin)
 public class CapacitorVideoPlugin: CAPPlugin {
+    
 
-    @objc func echo(_ call: CAPPluginCall) {
-        let value = call.getString("value") ?? ""
+    @objc func selectVideo(_ call: CAPPluginCall) {
         call.success([
-            "value": value
+            "path": "u wot m8?"
         ])
     }
 }

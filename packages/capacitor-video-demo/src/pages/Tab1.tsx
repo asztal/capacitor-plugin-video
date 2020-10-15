@@ -1,4 +1,4 @@
-import { CapacitorVideoPlugin } from "capacitor-plugin-video";
+import { Capacitor } from "@capacitor/core";
 import { IonButton, IonContent, IonHeader, IonItem, IonLabel, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import React, { useState } from 'react';
 import './Tab1.css';
@@ -8,13 +8,13 @@ const Tab1: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Tab 1</IonTitle>
+          <IonTitle>Browse</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">Tab 1</IonTitle>
+            <IonTitle size="large">Browse</IonTitle>
           </IonToolbar>
         </IonHeader>
 
@@ -27,11 +27,29 @@ const Tab1: React.FC = () => {
 function Upload() {
   const [path, setPath] = useState<string>();
   const [nativePath, setNativePath] = useState<string>();
+  const [error, setError] = useState<Error>();
 
-  const handleClick = () => {
-    console.log(CapacitorVideoPlugin.echo({ value: "Hello" }));
-    setPath(path);
-    setNativePath(nativePath);
+  const handleClick = async () => {
+    try {
+      const plugins = Capacitor.Plugins;
+      if (!plugins)
+        throw new Error("Plugins not loaded");
+
+      const plugin = plugins.CapacitorVideoPlugin;
+      if (!plugin)
+        throw new Error("Plugin not found");
+
+      const result = await plugin.selectVideo({});
+      if (!result)
+        throw new Error("Plugin did not return a result");
+      setPath(result.path);
+      setNativePath(result.path ? Capacitor.convertFileSrc(result.path) : undefined);
+      setError(undefined);
+    } catch(err) {
+      setPath(undefined);
+      setNativePath(undefined);
+      setError(err);
+    }
   };
 
   return (
@@ -42,6 +60,12 @@ function Upload() {
         </IonButton>
       </div>
       <IonList>
+        <IonItem>
+          <IonLabel>
+            <h2>Result</h2>
+            <p>{error ? `Error: ${error.message}` : path ? "Success" : "No result" }</p>
+          </IonLabel>
+        </IonItem>
         <IonItem>
           <IonLabel>
             <h2>File path</h2>

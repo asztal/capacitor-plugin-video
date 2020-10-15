@@ -5,5 +5,9 @@ declare module '@capacitor/core' {
 }
 
 export interface CapacitorVideoPluginPlugin {
-  echo(options: { value: string }): Promise<{ value: string }>;
+  selectVideo(options: {
+    
+  }): Promise<{
+    path?: string;
+  }>;
 }
