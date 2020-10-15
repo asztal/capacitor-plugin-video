@@ -1,5 +1,7 @@
 {
   "name": "capacitor-video-demo",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "react"
 }
